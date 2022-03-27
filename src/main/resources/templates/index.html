@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- HTML5 Shiv 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <title>汽车租赁</title>
+</head>
+<body>
+    <h1 class="text-center" th:text="${msg}">默认内容</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <table class="table table-bordered table-hover">
+                    <caption><i>Car Inventory</i></caption>
+                    <thead>
+                    <tr>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td class="text-center">
+                            <b>Car Model</b>
+                        </td>
+                        <td class="text-center">
+                            <b>In Stock</b>
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="car : ${cars}">
+                        <td class="text-center">
+                            <input type="radio" name="car" id="car"/>
+                        <td th:text="${{car.name}}">
+                            BMW 650
+                        </td>
+                        <td class="text-center" th:text="${{car.count}}">
+                            2
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <label id="lblCustomer" for="customer">Customer：</label>
+                <input type="text" id="customer" maxlength="20">
+            </div>
+            <div class="col-md-4 col-md-offset-4">
+                <label id="lblRentTime" for="rentTime">Rent Time：</label>
+                <input type="text" id="rentTime" maxlength="8">
+                <select id="timeUnit" >
+                    <option th:each="timeUnit : ${timeUnits}">
+                        <span th:text="${timeUnit}">DAY</span>
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-4 col-md-offset-4">
+                <button id="btn" class="btn btn-primary btn-lg btn-block">提交</button>
+            </div>
+        </div>
+    </div>
+<script>
+    $(function (){
+        $("#btn").click(function (){
+            console.log($("#customer").val());
+            console.log($("#timeUnit").val());
+            $.get("/rentCar/test/BWM 650/1/DAY", function (data, status) {
+                console.log(data);
+                console.log(status);
+                alert("Done!");
+            });
+        });
+    });
+</script>
+</body>
+</html>

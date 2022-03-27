@@ -1,6 +1,8 @@
 package org.example.controller;
 
 import org.example.dto.CarInventoryDto;
+import org.example.dto.CarRentalDto;
+import org.example.dto.CarRentalHisDto;
 import org.example.service.ICarsRentalService;
 import org.example.utils.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +25,14 @@ public class ThymeLeafCtl {
         return "index";
     }
 
-    @RequestMapping("/book")
-    public String submit(Model model, String customer, String carModel, int rentTime, String unit) {
-        init(model);
-        carsRentalService.rentCar(customer, carModel, rentTime, unit);
-
-        return "index";
-    }
-
     private void init(Model model) {
         model.addAttribute("msg", "Car Rental Center");
-        List<CarInventoryDto> list = carsRentalService.findInStockCount();
-        model.addAttribute("cars", list);
+        List<CarInventoryDto> carInventoryDtoList = carsRentalService.findInStockCount();
+        model.addAttribute("cars", carInventoryDtoList);
         model.addAttribute("timeUnits", Arrays.stream(TimeUnit.values()).map(TimeUnit::name).collect(Collectors.toList()));
+        List<CarRentalDto> carRentalDtoList = carsRentalService.findAllRentCars();
+        model.addAttribute("carRents", carRentalDtoList);
+        List<CarRentalHisDto> carRentalHisDtoList = carsRentalService.findAllHisRentCars();
+        model.addAttribute("carRentsHis", carRentalHisDtoList);
     }
 }

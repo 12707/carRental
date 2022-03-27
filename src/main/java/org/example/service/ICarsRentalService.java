@@ -1,6 +1,8 @@
 package org.example.service;
 
 import org.example.dto.CarInventoryDto;
+import org.example.dto.CarRentalDto;
+import org.example.dto.CarRentalHisDto;
 import org.example.pojo.CommonResponse;
 
 import java.util.Date;
@@ -50,4 +52,18 @@ public interface ICarsRentalService {
      * @return
      */
     List<CarInventoryDto> findInStockCount();
+
+    /**
+     * find all available cars that be rent and are not overdue, it is used for fronted page.
+     *
+     * @return
+     */
+    List<CarRentalDto> findAllRentCars();
+
+    /**
+     * find all cars that have been overdue, it is used for fronted page.
+     *
+     * @return
+     */
+    List<CarRentalHisDto> findAllHisRentCars();
 }

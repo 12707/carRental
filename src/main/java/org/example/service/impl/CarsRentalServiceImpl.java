@@ -7,6 +7,8 @@ import org.example.domain.CarInventory;
 import org.example.domain.CarRental;
 import org.example.domain.CarRentalHis;
 import org.example.dto.CarInventoryDto;
+import org.example.dto.CarRentalDto;
+import org.example.dto.CarRentalHisDto;
 import org.example.exception.CarsRentalException;
 import org.example.pojo.CommonResponse;
 import org.example.service.ICarsRentalService;
@@ -123,6 +125,42 @@ public class CarsRentalServiceImpl implements ICarsRentalService {
                     carInventoryDto.setCount(Integer.parseInt(carInventory[1].toString()));
                 }
                 result.add(carInventoryDto);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<CarRentalDto> findAllRentCars() {
+        List<CarRental> carRentalList = carRentalRepository.findRentCars(new Date());
+        List<CarRentalDto> result = new ArrayList<>();
+        if (carRentalList != null && carRentalList.size() > 0) {
+            for (CarRental carRental : carRentalList) {
+                CarRentalDto carRentalDto = new CarRentalDto();
+                carRentalDto.setCarId(String.valueOf(carRental.getCarId()));
+                carRentalDto.setCustomer(carRental.getCustomer());
+                carRentalDto.setCarModel(carRental.getCarModel());
+                carRentalDto.setStartDate(CommonTools.formatDate(carRental.getStartDate()));
+                carRentalDto.setDueDate(CommonTools.formatDate(carRental.getDueDate()));
+                result.add(carRentalDto);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<CarRentalHisDto> findAllHisRentCars() {
+        List<CarRentalHis> carRentalHisList = carRentalHisRepository.findAll();
+        List<CarRentalHisDto> result = new ArrayList<>();
+        if (carRentalHisList != null && carRentalHisList.size() > 0) {
+            for (CarRentalHis carRental : carRentalHisList) {
+                CarRentalHisDto carRentalDto = new CarRentalHisDto();
+                carRentalDto.setCarId(String.valueOf(carRental.getCarId()));
+                carRentalDto.setCustomer(carRental.getCustomer());
+                carRentalDto.setCarModel(carRental.getCarModel());
+                carRentalDto.setStartDate(CommonTools.formatDate(carRental.getStartDate()));
+                carRentalDto.setDueDate(CommonTools.formatDate(carRental.getDueDate()));
+                result.add(carRentalDto);
             }
         }
         return result;

@@ -18,6 +18,7 @@ spring:
       settings:
         trace: false
         web-allow-others: true
+
 logging:
   level:
     root: info

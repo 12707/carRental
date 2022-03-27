@@ -37,7 +37,7 @@
                     <tbody>
                     <tr th:each="car : ${cars}">
                         <td class="text-center">
-                            <input type="radio" name="car" id="car"/>
+                            <input type="radio" name="car" th:value="${{car.name}}"/>
                         <td th:text="${{car.name}}">
                             BMW 650
                         </td>
@@ -65,20 +65,139 @@
                 </select>
             </div>
             <div class="col-md-4 col-md-offset-4">
-                <button id="btn" class="btn btn-primary btn-lg btn-block">提交</button>
+                <button id="submitBtn" class="btn btn-primary btn-lg btn-block">Submit</button>
+                <button id="queryBtn" class="btn btn-primary btn-lg btn-block">Query</button>
+            </div>
+        </div>
+
+        <br><br>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <table class="table table-striped table-hover">
+                    <caption><i>Car Rent List</i></caption>
+                    <thead>
+                    <tr>
+                        <td>
+                            <b>Car Id</b>
+                        </td>
+                        <td>
+                            <b>Car Model</b>
+                        </td>
+                        <td class="text-center">
+                            <b>Customer</b>
+                        </td>
+                        <td class="text-center">
+                            <b>Start Date</b>
+                        </td>
+                        <td class="text-center">
+                            <b>Due Date</b>
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="carRent : ${carRents}">
+                        <td th:text="${{carRent.carId}}">
+                            1
+                        </td>
+                        <td th:text="${{carRent.carModel}}">
+                            BMW 650
+                        </td>
+                        <td  class="text-center" th:text="${{carRent.customer}}">
+                            Customer
+                        </td>
+                        <td  class="text-center" th:text="${{carRent.startDate}}">
+                            2022-03-28 01:03:37
+                        </td>
+                        <td  class="text-center" th:text="${{carRent.dueDate}}">
+                            2022-03-28 02:03:37
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <br><br>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <table class="table table-striped table-hover">
+                    <caption><i>Car Rent History List</i></caption>
+                    <thead>
+                    <tr>
+                        <td>
+                            <b>Car Id</b>
+                        </td>
+                        <td>
+                            <b>Car Model</b>
+                        </td>
+                        <td class="text-center">
+                            <b>Customer</b>
+                        </td>
+                        <td class="text-center">
+                            <b>Start Date</b>
+                        </td>
+                        <td class="text-center">
+                            <b>Due Date</b>
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="carRent : ${carRentsHis}">
+                        <td th:text="${{carRent.carId}}">
+                            1
+                        </td>
+                        <td th:text="${{carRent.carModel}}">
+                            BMW 650
+                        </td>
+                        <td  class="text-center" th:text="${{carRent.customer}}">
+                            Customer
+                        </td>
+                        <td  class="text-center" th:text="${{carRent.startDate}}">
+                            2022-03-28 01:03:37
+                        </td>
+                        <td  class="text-center" th:text="${{carRent.dueDate}}">
+                            2022-03-28 02:03:37
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+
+    <form id="myForm" action="/"></form>
 <script>
     $(function (){
-        $("#btn").click(function (){
-            console.log($("#customer").val());
-            console.log($("#timeUnit").val());
-            $.get("/rentCar/test/BMW 650/1/DAY", function (data, status) {
-                console.log(data);
-                console.log(status);
-                alert("Done!");
+        $("#submitBtn").click(function (){
+            if (!$("input[name='car']:checked").val()) {
+                alert("Please check car radio!");
+                return;
+            }
+
+            if (!$("#customer").val()) {
+                alert("Please input the customer!");
+                return;
+            }
+            if (!$("#rentTime").val()) {
+                alert("Please input the rent time!");
+                return;
+            }
+            if (!Number.isInteger(Number.parseInt($("#rentTime").val()))) {
+                alert("Please input integer for rent time !");
+                return;
+            }
+
+            $.get("/rentCar/" + $("#customer").val() + "/" + $("input[name='car']:checked").val() + "/" + $("#rentTime").val() + "/" + $("#timeUnit").val(), function (data, status) {
+                if (status === "success" && data && data.code === "S") {
+                    $("#myForm").submit();
+                }
             });
+        });
+
+        $("#queryBtn").click(function (){
+            $("#myForm").submit();
         });
     });
 </script>

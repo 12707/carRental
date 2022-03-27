@@ -13,4 +13,7 @@ public interface CarRentalRepository extends JpaRepository<CarRental, BigInteger
 
     @Query(value = "from CarRental where dueDate < :date")
     List<CarRental> findOverDueRentCars(@Param("date") Date date);
+
+    @Query(value = "from CarRental where dueDate >= :date")
+    List<CarRental> findRentCars(@Param("date") Date date);
 }

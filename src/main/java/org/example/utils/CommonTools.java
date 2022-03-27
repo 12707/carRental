@@ -2,6 +2,7 @@ package org.example.utils;
 
 import org.springframework.format.datetime.DateFormatter;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.logging.Logger;
 public final class CommonTools {
     private static Logger logger = Logger.getLogger("CommonTools");
     private static DateFormatter dateFormatter = new DateFormatter("yyyyMMdd");
+    private static DateFormatter dateFormatter2 = new DateFormatter("yyyy-MM-dd HH:mm:ss");
 
     public static String generateUuid() {
         UUID uuid = UUID.nameUUIDFromBytes(String.valueOf(new Date().getTime()).getBytes());
@@ -47,5 +49,13 @@ public final class CommonTools {
         }
         Date result = calendar.getTime();
         return result;
+    }
+
+    public static String formatDate(Date date) {
+        return dateFormatter2.print(date, Locale.CHINA);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(formatDate(new Date()));
     }
 }

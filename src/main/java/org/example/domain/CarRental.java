@@ -1,7 +1,6 @@
 package org.example.domain;
 
-import jakarta.persistence.*;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
@@ -11,6 +10,7 @@ import java.util.Date;
 public class CarRental implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private BigInteger id;
 
     @Column(name = "CAR_ID")

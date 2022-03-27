@@ -1,7 +1,9 @@
 package org.example.domain;
 
-import jakarta.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;

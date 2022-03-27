@@ -1,10 +1,10 @@
 package org.example.job;
 
-import jakarta.annotation.PostConstruct;
 import org.example.service.ICarsRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +22,7 @@ public class CarRentalTimerTask {
     @Autowired
     private ICarsRentalService carsRentalService;
 
-    private static final int INITIAL_DELAY_TIME = 0;
+    private static final int INITIAL_DELAY_TIME = 30;
 
     private static final int PERIOD = 5;
 

@@ -1,6 +1,5 @@
 package org.example.service.impl;
 
-import jakarta.transaction.Transactional;
 import org.example.dao.CarInventoryRepository;
 import org.example.dao.CarRentalHisRepository;
 import org.example.dao.CarRentalRepository;
@@ -18,16 +17,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static jakarta.transaction.Transactional.TxType.REQUIRED;
+import static javax.transaction.Transactional.TxType.REQUIRED;
 import static org.example.utils.Errors.*;
 
 @Service
@@ -72,9 +71,15 @@ public class CarsRentalServiceImpl implements ICarsRentalService {
     @Override
     @Transactional
     public int unlockCarRecords() {
+        return unlockCarRecords(new Date());
+    }
+
+    @Override
+    @Transactional
+    public int unlockCarRecords(Date date) {
         int result = 0;
         try {
-            List<CarRental> carRentalList = carRentalRepository.findOverDueRentCars(new Date());
+            List<CarRental> carRentalList = carRentalRepository.findOverDueRentCars(date);
             List<BigInteger> carIdParams = new ArrayList<>();
             List<BigInteger> rentIdParams = new ArrayList<>();
             if (carRentalList != null && carRentalList.size() > 0) {
@@ -94,7 +99,8 @@ public class CarsRentalServiceImpl implements ICarsRentalService {
             }
 
             if (rentIdParams.size() > 0) {
-                carRentalRepository.deleteAllById(rentIdParams);
+                //carRentalRepository.deleteAllById(rentIdParams);
+                carRentalRepository.deleteAll(carRentalList);
             }
 
         } catch (Exception e) {

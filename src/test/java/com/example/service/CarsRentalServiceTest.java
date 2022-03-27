@@ -4,6 +4,7 @@ import org.example.Application;
 import org.example.exception.CarsRentalException;
 import org.example.pojo.CommonResponse;
 import org.example.service.ICarsRentalService;
+import org.example.utils.CommonTools;
 import org.example.utils.TimeUnit;
 import org.junit.Assert;
 import org.junit.Test;
@@ -45,51 +46,55 @@ public class CarsRentalServiceTest {
     }
 
     @Test
-    public void testRentCarByDay() {
-        CommonResponse commonResponse = carsRentalService.rentCar("test", "Toyota Camry", 1, TimeUnit.DAY.name());
+    public void testRentCarBySecond() {
+        carsRentalService.unlockCarRecords(CommonTools.parse("20990101"));
+        CommonResponse commonResponse = carsRentalService.rentCar("test", "Toyota Camry", 1, TimeUnit.SECOND.name());
         Assert.assertNotNull(commonResponse);
-        Assert.assertEquals(commonResponse.getCode(), "S");
-        Assert.assertEquals(commonResponse.getMessage(), "Success");
+        Assert.assertEquals("S", commonResponse.getCode());
+        Assert.assertEquals("Success", commonResponse.getMessage());
     }
 
     @Test
-    public void testRentCarBySecond() {
-        CommonResponse commonResponse = carsRentalService.rentCar("test", "Toyota Camry", 1, TimeUnit.SECOND.name());
+    public void testRentCarByDay() {
+        carsRentalService.unlockCarRecords(CommonTools.parse("20990101"));
+        CommonResponse commonResponse = carsRentalService.rentCar("test", "Toyota Camry", 1, TimeUnit.DAY.name());
         Assert.assertNotNull(commonResponse);
-        Assert.assertEquals(commonResponse.getCode(), "S");
-        Assert.assertEquals(commonResponse.getMessage(), "Success");
+        Assert.assertEquals("S", commonResponse.getCode());
+        Assert.assertEquals("Success", commonResponse.getMessage());
     }
 
     @Test
     public void testRentCarByMinute() {
+        carsRentalService.unlockCarRecords(CommonTools.parse("20990101"));
         CommonResponse commonResponse = carsRentalService.rentCar("test", "Toyota Camry", 1, TimeUnit.MINUTE.name());
         Assert.assertNotNull(commonResponse);
-        Assert.assertEquals(commonResponse.getCode(), "S");
-        Assert.assertEquals(commonResponse.getMessage(), "Success");
+        Assert.assertEquals("S", commonResponse.getCode());
+        Assert.assertEquals("Success", commonResponse.getMessage());
     }
 
     @Test
     public void testRentCarByHour() {
         CommonResponse commonResponse = carsRentalService.rentCar("test", "Toyota Camry", 1, TimeUnit.HOUR.name());
         Assert.assertNotNull(commonResponse);
-        Assert.assertEquals(commonResponse.getCode(), "S");
-        Assert.assertEquals(commonResponse.getMessage(), "Success");
+        Assert.assertEquals("S", commonResponse.getCode());
+        Assert.assertEquals("Success", commonResponse.getMessage());
     }
 
     @Test
     public void testRentCarByYear() {
         CommonResponse commonResponse = carsRentalService.rentCar("test", "Toyota Camry", 1, TimeUnit.YEAR.name());
         Assert.assertNotNull(commonResponse);
-        Assert.assertEquals(commonResponse.getCode(), "S");
-        Assert.assertEquals(commonResponse.getMessage(), "Success");
+        Assert.assertEquals("S", commonResponse.getCode());
+        Assert.assertEquals("Success", commonResponse.getMessage());
     }
 
     @Test
     public void testRentCarByMonth() {
+        carsRentalService.unlockCarRecords(CommonTools.parse("20990101"));
         CommonResponse commonResponse = carsRentalService.rentCar("test", "Toyota Camry", 1, TimeUnit.MONTH.name());
         Assert.assertNotNull(commonResponse);
-        Assert.assertEquals(commonResponse.getCode(), "S");
-        Assert.assertEquals(commonResponse.getMessage(), "Success");
+        Assert.assertEquals("S", commonResponse.getCode());
+        Assert.assertEquals("Success", commonResponse.getMessage());
     }
 
     @Test
@@ -105,16 +110,16 @@ public class CarsRentalServiceTest {
     }
 
     @Test
-    public void testUnlockCarRecordsWithEmptyData() {
+    public void testUnlockCarRecordsWithAEmptyData() {
         int result = carsRentalService.unlockCarRecords();
-        Assert.assertEquals(result, 0);
+        Assert.assertEquals(0, result);
     }
 
     @Test
     public void testUnlockCarRecordsWithData() throws Exception {
-        carsRentalService.rentCar("test", "Toyota Camry", 1, TimeUnit.SECOND.name());
-        Thread.sleep(1);
+        carsRentalService.rentCar("test", "BMW 650", 1, TimeUnit.SECOND.name());
+        Thread.sleep(1000);
         int result = carsRentalService.unlockCarRecords();
-        Assert.assertEquals(result, 1);
+        Assert.assertEquals(1, result);
     }
 }

@@ -2,7 +2,7 @@
 The car booking service is designed to reserve a car, its major logic is as below:
 - A client sends necessary parameters to service, and then the service returns if it is successful or not.
 ````
-Customer's identity, which must be located in http header.
+Customer's identity which should be located in http header, but in this demo it is just put on path.
 A car model name.
 A date customer wants to start to book.
 Days customer wants to book.
@@ -47,12 +47,12 @@ There could be an another solution. At the beginning not update the status, just
 
 ## Input
 
-| name      | type   | description                                         | example  |
-|-----------|--------|:----------------------------------------------------|----------|
-| customer  | string | the current login user, which exists in http header | test     |
-| carModel  | string | the model of car                                    | BMW 650  |
-| dayOfRent | number | the days of renting a car                           | 1        |
-| startDate | string | the date that start to rent a car                   | 20220324 |
+| name      | type   | description                       | example  |
+|-----------|--------|:----------------------------------|----------|
+| customer  | string | the current login user            | test     |
+| carModel  | string | the model of car                  | BMW 650  |
+| dayOfRent | number | the days of renting a car         | 1        |
+| startDate | string | the date that start to rent a car | 20220324 |
 
 ## Output
 
@@ -64,14 +64,15 @@ There could be an another solution. At the beginning not update the status, just
 ## Table
 Name: T_CAR_INVENTORY
 
-| column       |   type    |  PK   | nullable | index  |   default value   | remark                                                                                       |
-|--------------|:---------:|:-----:|:--------:|:------:|:-----------------:|:---------------------------------------------------------------------------------------------|
-| ID           |  bigint   |   Y   |    N     |        |                   | automatic increment                                                                          |
-| NAME         |  varchar  |   N   |    Y     |        |                   | the name of a car                                                                            |
-| STATUS       |  varchar  |   N   |    Y     |        |         0         | 0:available, 1:booked                                                                        |
-| LOCK_ID      |  varchar  |   N   |    Y     |   Y    |                   | unique string for each request, which is used to avoid multiple thread handling same record. |
-| CREATE_TIME  | timestamp |   N   |    Y     |        | current_timestamp | create time                                                                                  |
-| CREATE_BY    |  varchar  |   N   |    Y     |        |                   | create by                                                                                    |
+| column      |   type    |  PK   | nullable | index  |   default value   | remark                                                                                       |
+|-------------|:---------:|:-----:|:--------:|:------:|:-----------------:|:---------------------------------------------------------------------------------------------|
+| ID          |  bigint   |   Y   |    N     |        |                   | automatic increment                                                                          |
+| NAME        |  varchar  |   N   |    Y     |        |                   | the name of a car                                                                            |
+| LOCK_ID     |  varchar  |   N   |    Y     |   Y    |                   | unique string for each request, which is used to avoid multiple thread handling same record. |
+| CREATE_TIME | timestamp |   N   |    Y     |        | current_timestamp | create time                                                                                  |
+| CREATE_BY   |  varchar  |   N   |    Y     |        |                   | created by                                                                                   |
+| UPDATE_TIME | timestamp |   N   |    Y     |        | current_timestamp | update time                                                                                  |
+| UPDATED_BY  |  varchar  |   N   |    Y     |        |                   | updated by                                                                                   |
 
 Name: T_CAR_RENTAL
 
@@ -84,16 +85,11 @@ Name: T_CAR_RENTAL
 | START_DATE    |    date    |   N   |    Y     |       |                   | a date that the customer wants to rent a car.                                                     |
 | DAYS_OF_RENT  |    int     |   N   |    Y     |       |                   | how many days does the customer want to rent a car.                                               |
 | DUE_DATE      |    date    |   N   |    Y     |       |                   | a date that the customer need to return the car, it is calculated by start_date and days_of_rent. |
-| CREATE_TIME   | timestamp  |   N   |    Y     |       | current_timestamp | create time                                                                                       |
-| CREATE_BY     |  varchar   |   N   |    Y     |       |                   | create by                                                                                         |
-
-
 
 
 ## URI
 ````
-"customer" should be added in HTTP Header. 
-/rentCar/{startDate}/{carModel}/{dayOfRent}
+/rentCar/{customer}/{carModel}/{rentTime}/{unit}
 ````
 
 ## Test Cases
@@ -101,7 +97,5 @@ Name: T_CAR_RENTAL
 2. As a customer who invokes the API, if no customer filed in http request, the service returns a json-based string like "{code: E, message: The customer doesn't exist!}".
 3. As a customer who invokes the API, if a car model is not specified, the service returns a json-based string like "{code: E, message: The input [] is illegal!}".
 4. As a customer who invokes the API, if input wrong a car model like "WrongCarModel", the service returns a json-based string like "{code: E, message: The input [WrongCarModel] is illegal!}".
-5. As a customer who invokes the API, if a rent start date is not specified, the service returns a json-based string like "{code: E, message: The input [] is illegal!}".
-6. As a customer who invokes the API, if input wrong rent start date like "2022-0332", the service returns a json-based string like "{code: E, message: The input [2022-0332] is illegal!}".
-7. As a customer who invokes the API, if input days of rent as 0, The input number [0] should be a positive integer!}".
-8. As a customer who invokes the API, if input negative days of rent like -1, The input number [-1] should be a positive integer!}".
+5. As a customer who invokes the API, if input days of rent as 0, The input number [0] should be a positive integer!}".
+6. As a customer who invokes the API, if input negative days of rent like -1, The input number [-1] should be a positive integer!}".

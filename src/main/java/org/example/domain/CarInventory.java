@@ -1,8 +1,6 @@
 package org.example.domain;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
@@ -31,16 +29,6 @@ public class CarInventory implements Serializable {
 
     @Column(name = "UPDATED_BY")
     private String updatedBy;
-
-    private int count;
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
 
     public BigInteger getId() {
         return id;

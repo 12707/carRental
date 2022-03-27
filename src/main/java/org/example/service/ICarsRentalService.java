@@ -3,6 +3,7 @@ package org.example.service;
 import org.example.dto.CarInventoryDto;
 import org.example.pojo.CommonResponse;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ICarsRentalService {
@@ -34,6 +35,14 @@ public interface ICarsRentalService {
      * @return
      */
     int unlockCarRecords();
+
+    /**
+     * Only used for test cases, to clear up the data.
+     *
+     * @param date
+     * @return
+     */
+    int unlockCarRecords(Date date);
 
     /**
      * find car's count in stock, it is used for fronted page.

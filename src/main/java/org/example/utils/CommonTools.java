@@ -2,12 +2,8 @@ package org.example.utils;
 
 import org.springframework.format.datetime.DateFormatter;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +11,7 @@ public final class CommonTools {
     private static Logger logger = Logger.getLogger("CommonTools");
     private static DateFormatter dateFormatter = new DateFormatter("yyyyMMdd");
     private static DateFormatter dateFormatter2 = new DateFormatter("yyyy-MM-dd HH:mm:ss");
+    private static final String TIME_ZONE_CHONG_QING = "Asia/Chongqing";
 
     public static String generateUuid() {
         UUID uuid = UUID.nameUUIDFromBytes(String.valueOf(new Date().getTime()).getBytes());
@@ -52,6 +49,7 @@ public final class CommonTools {
     }
 
     public static String formatDate(Date date) {
+        dateFormatter2.setTimeZone(TimeZone.getTimeZone(TIME_ZONE_CHONG_QING));
         return dateFormatter2.print(date, Locale.CHINA);
     }
 

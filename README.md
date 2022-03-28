@@ -7,7 +7,7 @@ A car model name.
 A date customer wants to start to book.
 Days customer wants to book.
 ````
-- The identity info of client is attached to http header, which is caught by service side.
+- The identity info of client.
 
 ````
 e.g. The login account of a customer.
@@ -23,6 +23,12 @@ Each record in the table represents an available car.
 
 ````
 A record is inserted into it while at least a car is available.
+````
+
+- A table(T_CAR_RENTAL_HIS) is used to store the records that are overdue.
+
+````
+When a rent record is overdue, first of all app moves it to history table, and then delete the record in the formal table. 
 ````
 
 - The service generates a unique token for each request in order to avoid multiple customers apply for a same car.
@@ -83,7 +89,17 @@ Name: T_CAR_RENTAL
 | CAR_MODEL     |  varchar   |   N   |    Y     |       |                   | the name of a car                                                                                 |
 | CUSTOMER      |  varchar   |   N   |    Y     |       |                   | unique string for each request, which is used to avoid multiple thread handling same record.      |
 | START_DATE    |    date    |   N   |    Y     |       |                   | a date that the customer wants to rent a car.                                                     |
-| DAYS_OF_RENT  |    int     |   N   |    Y     |       |                   | how many days does the customer want to rent a car.                                               |
+| DUE_DATE      |    date    |   N   |    Y     |       |                   | a date that the customer need to return the car, it is calculated by start_date and days_of_rent. |
+
+Name: T_CAR_RENTAL_HIS
+
+| column        |    type    |  PK   | nullable | index |   default value   | remark                                                                                            |
+|---------------|:----------:|:-----:|:--------:|:-----:|:-----------------:|:--------------------------------------------------------------------------------------------------|
+| ID            |   bigint   |   Y   |    N     |       |                   |                                                                                                   |
+| CAR_ID        |   bigint   |   N   |    Y     |       |                   | the id of t_car_inventory                                                                         |
+| CAR_MODEL     |  varchar   |   N   |    Y     |       |                   | the name of a car                                                                                 |
+| CUSTOMER      |  varchar   |   N   |    Y     |       |                   | unique string for each request, which is used to avoid multiple thread handling same record.      |
+| START_DATE    |    date    |   N   |    Y     |       |                   | a date that the customer wants to rent a car.                                                     |
 | DUE_DATE      |    date    |   N   |    Y     |       |                   | a date that the customer need to return the car, it is calculated by start_date and days_of_rent. |
 
 

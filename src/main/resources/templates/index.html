@@ -60,7 +60,7 @@
                 <input type="text" id="rentTime" maxlength="8">
                 <select id="timeUnit" >
                     <option th:each="timeUnit : ${timeUnits}">
-                        <span th:text="${timeUnit}">DAY</span>
+                        <span th:text="${timeUnit}" >DAY</span>
                     </option>
                 </select>
             </div>
@@ -170,6 +170,13 @@
     <form id="myForm" action="/"></form>
 <script>
     $(function (){
+        //$("#timeUnit option:last").prop("selected", "selected");
+        $("#timeUnit option").each(function(){
+           if ($(this).val() === "DAY") {
+               $(this).prop("selected", "selected");
+           }
+        });
+
         $("#submitBtn").click(function (){
             if (!$("input[name='car']:checked").val()) {
                 alert("Please check car radio!");
